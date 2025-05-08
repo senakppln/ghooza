@@ -70,22 +70,22 @@ importers:
         specifier: 1.11.21
         version: 1.11.21
       '@types/cookie-parser':
-        specifier: ^1.4.8
+        specifier: 1.4.8
         version: 1.4.8(@types/express@5.0.1)
       '@types/express':
-        specifier: ^5.0.0
+        specifier: 5.0.1
         version: 5.0.1
       '@types/ms':
-        specifier: ^2.1.0
+        specifier: 2.1.0
         version: 2.1.0
       '@types/node':
-        specifier: ^22.14.1
+        specifier: 22.14.1
         version: 22.14.1
       '@types/passport-jwt':
-        specifier: ^4.0.1
+        specifier: 4.0.1
         version: 4.0.1
       '@types/supertest':
-        specifier: ^6.0.2
+        specifier: 6.0.3
         version: 6.0.3
       eslint:
         specifier: 9.25.1
