@@ -55,9 +55,9 @@
     "@types/passport-jwt": "4.0.1",
     "@types/supertest": "6.0.3",
     "eslint": "9.25.1",
-    "lint-staged": "^15.5.2",
+    "lint-staged": "15.5.2",
     "prisma": "6.6.0",
-    "simple-git-hooks": "^2.13.0",
+    "simple-git-hooks": "2.13.0",
     "supertest": "7.1.0",
     "typescript": "5.8.3"
   },
