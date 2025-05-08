@@ -10,18 +10,29 @@
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchPackagePatterns": ["^@nestjs/"],
       "groupName": "nestjs packages",
-      "matchDepTypes": ["dependencies", "devDependencies"]
+      "matchDepTypes": [
+        "dependencies",
+        "devDependencies"
+      ],
+      "matchPackageNames": [
+        "/^@nestjs//"
+      ]
     },
     {
-      "matchPackagePatterns": ["^@types/"],
       "groupName": "DefinitelyTyped packages",
-      "matchDepTypes": ["devDependencies"]
+      "matchDepTypes": [
+        "devDependencies"
+      ],
+      "matchPackageNames": [
+        "/^@types//"
+      ]
     }
   ],
   "npm": {
     "commitMessageTopic": "{{prettyDepType}} {{depName}}"
   },
-  "ignoreDeps": ["node"]
+  "ignoreDeps": [
+    "node"
+  ]
 }
