@@ -91,13 +91,13 @@ importers:
         specifier: 9.25.1
         version: 9.25.1
       lint-staged:
-        specifier: ^15.5.2
+        specifier: 15.5.2
         version: 15.5.2
       prisma:
         specifier: 6.6.0
         version: 6.6.0(typescript@5.8.3)
       simple-git-hooks:
-        specifier: ^2.13.0
+        specifier: 2.13.0
         version: 2.13.0
       supertest:
         specifier: 7.1.0
