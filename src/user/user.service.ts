@@ -5,12 +5,16 @@ import { PrismaService } from 'src/database'
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findOne(phone: string, password: string) {
+  async findOne(input: string) {
+    if (input == null) {
+      return null
+    }
+    const where = input.includes('@')
+      ? { email: input }
+      : { phone: input }
+
     const user = await this.prismaService.user.findUnique({
-      where: {
-        phone,
-        password,
-      },
+      where,
     })
 
     return user

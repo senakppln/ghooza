@@ -58,3 +58,6 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .pnpm-store
 eslint-typegen.d.ts
 .eslintcache
+
+# Prisma output
+prisma-generated/

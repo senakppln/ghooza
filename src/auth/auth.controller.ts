@@ -1,17 +1,29 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { ZodValidationPipe } from '@app/pipes'
+import { Login, loginSchema, SendTempPass, sendTempPassSchema } from '@app/schemas'
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common'
+import { Request, Response } from 'express'
 import { AuthService } from './auth.service'
+import { OpenAccess } from './decorator'
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('send-temp-pass')
-  async sendTempPass(@Body() phone: string) {
-    return phone
+  @OpenAccess()
+  @UseGuards()
+  async sendTempPass(@Body(new ZodValidationPipe(sendTempPassSchema)) sendTempPass: SendTempPass) {
+    return this.authService.sendTempPass(sendTempPass)
   }
 
   @Post('login')
-  async login(@Body() pass: string, phone: string) {
-    return this.authService.loginWithCredentials(pass, phone)
+  @OpenAccess()
+  async login(@Body(new ZodValidationPipe(loginSchema)) login: Login, @Res({ passthrough: true }) res: Response) {
+    return this.authService.loginWithCredentials(login, res)
+  }
+
+  @Post('refresh')
+  async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.authService.createCookies(req.user!, res, true)
   }
 }

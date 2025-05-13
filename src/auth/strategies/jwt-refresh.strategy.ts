@@ -3,7 +3,7 @@ import type { Request } from 'express'
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
-import { Config } from 'src/config/types'
+import { Config } from 'src/config'
 import { UserPayload } from '../types'
 
 @Injectable()
@@ -17,7 +17,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
         (req: Request) => JwtRefreshStrategy.fromCookie(req),
       ]),
       ignoreExpiration: false,
-      secretOrKey: configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      secretOrKey: configService.get('JWT_REFRESH_SECRET'),
     })
   }
 

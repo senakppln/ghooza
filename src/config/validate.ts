@@ -1,7 +1,7 @@
-import { environmentSchema } from './schema'
+import { configSchema } from './setup'
 
 export function validate(config: Record<string, unknown>) {
-  const parsedConfig = environmentSchema.safeParse(config)
+  const parsedConfig = configSchema.safeParse(config)
 
   if (!parsedConfig.success) {
     throw new Error(

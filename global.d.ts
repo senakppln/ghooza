@@ -1,14 +1,16 @@
-import type { EnvironmentSchema } from 'src/config/schema'
+import type { UserPayload } from 'src/auth/types'
+import type { ConfigSchema } from 'src/config'
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends EnvironmentSchema {}
+    interface ProcessEnv extends ConfigSchema {}
   }
 }
 
 declare module 'express' {
   interface Request {
     cookies: Record<string, string | undefined>
+    user?: UserPayload
   }
 }
 

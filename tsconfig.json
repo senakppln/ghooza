@@ -6,6 +6,9 @@
     "experimentalDecorators": true,
     "baseUrl": "./",
     "module": "commonjs",
+    "paths": {
+      "@app/*": ["./src/*"]
+    },
     "strictBindCallApply": false,
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": false,

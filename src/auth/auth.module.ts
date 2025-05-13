@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
 import { JwtModule } from '@nestjs/jwt'
-import { Config, JwtConfig } from 'src/config/types'
-import { UserService } from 'src/user/user.service'
-import { JwtStrategy } from './strategies/jwt.strategy'
+import { Config, JwtConfig } from 'src/config'
+import { UserService } from 'src/user'
+import { AuthController } from './auth.controller'
+import { AuthService } from './auth.service'
+import { JwtStrategy } from './strategies'
 
 @Module({
   imports: [
@@ -13,7 +16,6 @@ import { JwtStrategy } from './strategies/jwt.strategy'
         configService: ConfigService<Config, true>,
       ) => {
         const jwtConfig = configService.get<JwtConfig>('jwt')
-
         return {
           secret: jwtConfig.accessToken.secret,
           signOptions: { expiresIn: jwtConfig.accessToken.expiration },
@@ -22,7 +24,12 @@ import { JwtStrategy } from './strategies/jwt.strategy'
       inject: [ConfigService],
     }),
   ],
-  providers: [UserService, JwtStrategy],
-  exports: [UserService],
+  controllers: [AuthController],
+  providers: [AuthService, UserService, JwtStrategy, ConfigService, {
+    provide: APP_GUARD,
+    useValue: undefined,
+  }],
+
+  exports: [AuthService],
 })
 export class AuthModule {}
