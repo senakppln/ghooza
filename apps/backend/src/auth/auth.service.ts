@@ -8,10 +8,10 @@ import Redis from 'ioredis'
 import ms, { StringValue } from 'ms'
 import { User } from 'prisma-generated/client'
 import { Config, JwtConfig } from 'src/config'
-import { Login, SendTempPass } from 'src/schemas'
 import { UserService } from 'src/user'
 import { UserPayload } from './types'
 import { generateToken } from './util/generate-token'
+import { Login, SendTempPass } from 'schemas'
 
 @Injectable()
 export class AuthService {
