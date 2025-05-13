@@ -1,50 +1,66 @@
-# compiled output
-/dist
-/node_modules
-/build
+# Dependencies
+node_modules
+
+package-lock.json
 
 # Logs
 logs
 *.log
-npm-debug.log*
-pnpm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
 
-# OS
-.DS_Store
+# Temp directories
+.temp
+.tmp
+.cache
 
-# Tests
-/coverage
-/.nyc_output
+# Generated dirs
+dist
+.data
+.nuxt
+.nuxt-*
+.nitro
+.vercel
+.netlify
+.output
+.output-*
+.gen
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# Coverage reports
+coverage
 
-# IDE - VSCode
+# VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.history
 
-# dotenv environment variable files
-.env
-.env.development
-.env.test
-.env.production
-.env
+# Intellij idea
+*.iml
+.fleet
+.idea
 
-# temp directory
-.temp
-.tmp
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
 
 # Runtime data
 pids
@@ -55,9 +71,14 @@ pids
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+.env
+!.env.example
+
+.vercel_build_output
+.build-*
+.netlify
+
 .pnpm-store
 eslint-typegen.d.ts
 .eslintcache
-
-# Prisma output
-prisma-generated/
+prisma-generated

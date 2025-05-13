@@ -1,6 +1,6 @@
-import { antfu } from '@antfu/eslint-config'
+import antfu from '@antfu/eslint-config'
 
 export default antfu({
-  typescript: { tsconfigPath: './tsconfig.json' },
-  ignores: ['prisma'],
+  typescript: false,
+  ignores: ['apps', 'packages'],
 })

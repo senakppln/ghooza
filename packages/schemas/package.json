@@ -1,0 +1,41 @@
+{
+  "name": "schemas",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "lint": "eslint --cache .",
+    "lint:fix": "pnpm lint --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@date-fns/tz": "^1.2.0",
+    "@date-fns/utc": "^2.1.0",
+    "date-fns": "^4.1.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "4.13.0",
+    "eslint": "9.26.0",
+    "typescript": "5.8.3",
+    "unbuild": "3.5.0"
+  }
+}
