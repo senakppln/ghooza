@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthModule, JwtAuthGuard } from './auth'
 import { Config, validate } from './config'
-import { loads } from './config/setup/loads'
+import { loads } from './config/setup/config.loads'
 import { DatabaseModule } from './database'
 
 @Module({
