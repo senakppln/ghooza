@@ -1,5 +1,5 @@
 import { InjectRedis } from '@nestjs-modules/ioredis'
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcryptjs'
@@ -7,11 +7,11 @@ import { Response } from 'express'
 import Redis from 'ioredis'
 import ms, { StringValue } from 'ms'
 import { User } from 'prisma-generated/client'
+import { Login, SendTempPass, SignUp } from 'schemas'
 import { Config, JwtConfig } from 'src/config'
 import { UserService } from 'src/user'
 import { UserPayload } from './types'
 import { generateToken } from './util/generate-token'
-import { Login, SendTempPass } from 'schemas'
 
 @Injectable()
 export class AuthService {
@@ -23,35 +23,35 @@ export class AuthService {
   ) {}
 
   async sendTempPass(sendTempPass: SendTempPass) {
-    const { email, phone } = sendTempPass
-
-    const input = email?.trim() ?? phone?.trim()
+    const { input } = sendTempPass
 
     if (input == null) {
       throw new BadRequestException('Phone or email is required')
     }
 
-    const user = await this.userService.findOne(input)
-
-    if (!user) {
-      return { userExists: false }
-    }
-
     const tempPass = generateToken()
     const hashedPass = await bcrypt.hash(tempPass, 10)
 
-    await this.redis.set(`pass:${user.uuid}`, hashedPass, 'EX', ms('5m'))
+    await this.redis.set(`pass:${input}`, hashedPass, 'EX', ms('2m'))
     return tempPass
   }
 
-  async validateUser(input: string, password: string) {
-    const user = await this.userService.findOne(input)
+  async signUp(signUp: SignUp, res: Response) {
+    const user = await this.userService.findOne(signUp.input)
 
-    if (!user) {
-      throw new NotFoundException('User not found')
+    if (user) {
+      throw new BadRequestException('User already exists')
     }
 
-    const redisPass = await this.redis.get(`pass:${user.uuid}`)
+    const createdUser = await this.userService.create(signUp)
+
+    await this.createCookies(createdUser, res)
+
+    return createdUser
+  }
+
+  async validateTempPass(input: string, password: string) {
+    const redisPass = await this.redis.get(`pass:${input}`)
 
     if (redisPass == null) {
       throw new UnauthorizedException('Temporary password does not exist')
@@ -61,6 +61,14 @@ export class AuthService {
 
     if (!isMatch) {
       throw new UnauthorizedException('Invalid password')
+    }
+  }
+
+  async validateUser(input: string) {
+    const user = await this.userService.findOne(input)
+
+    if (!user) {
+      return { isUser: false }
     }
 
     return user
@@ -98,15 +106,19 @@ export class AuthService {
   }
 
   async loginWithCredentials(login: Login, res: Response) {
-    const { email, phone, password } = login
-
-    const input = email?.trim() ?? phone?.trim()
+    const { input, password } = login
 
     if (input == null) {
       throw new BadRequestException('Phone or email is required')
     }
 
-    const user = await this.validateUser(input, password)
+    await this.validateTempPass(input, password)
+
+    const user = await this.validateUser(input)
+
+    if ('isUser' in user) {
+      return user
+    }
 
     await this.createCookies(user, res, true)
   }

@@ -1,9 +1,9 @@
-import { Controller, Post } from '@nestjs/common'
+import { Controller, Patch } from '@nestjs/common'
 
 @Controller('user')
 export class UserController {
-  @Post('register')
-  async register() {
-    return 'register'
+  @Patch('update')
+  async update() {
+    return 'update'
   }
 }

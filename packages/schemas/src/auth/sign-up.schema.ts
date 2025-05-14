@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
-export const loginSchema = z.object({
+export const signUpSchema = z.object({
   input: z.string().email().or(z.string().regex(/^(\+90\s?)?5\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$/)),
-  password: z.string(),
+  name: z.string().max(20),
 })
 
-export type Login = z.infer<typeof loginSchema>
+export type SignUp = z.infer<typeof signUpSchema>

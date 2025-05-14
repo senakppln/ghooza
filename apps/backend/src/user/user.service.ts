@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { SignUp } from 'schemas'
 import { PrismaService } from 'src/database'
 
 @Injectable()
@@ -18,5 +19,15 @@ export class UserService {
     })
 
     return user
+  }
+
+  async create(signUp: SignUp) {
+    const { input, name } = signUp
+
+    const data = input.includes('@')
+      ? { email: input, name }
+      : { phone: input, name }
+
+    return this.prismaService.user.create({ data })
   }
 }
