@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { NuxtRouteAnnouncer } from '#components';
-
+import { NuxtRouteAnnouncer } from '#components'
 </script>
 
 <template>

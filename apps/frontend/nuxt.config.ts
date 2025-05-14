@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
   ],
-    runtimeConfig: {
+  runtimeConfig: {
     public: {
       apiBase: 'http://localhost:8000',
     },
