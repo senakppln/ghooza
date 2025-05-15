@@ -5,13 +5,13 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output = "../prisma-generated/client"
+  output   = "../prisma-generated/client"
 }
 
 model User {
   id        Int      @id @default(autoincrement())
   uuid      String   @unique @default(uuid())
-  phone     String?  @unique
+  phone     String   @unique
   email     String?  @unique
   name      String
   createdAt DateTime @default(now())

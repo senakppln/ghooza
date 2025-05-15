@@ -1,4 +1,4 @@
 export interface UserPayload {
-  email: string
+  phone: string
   sub?: string
 }

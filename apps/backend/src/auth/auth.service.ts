@@ -7,7 +7,7 @@ import { Response } from 'express'
 import Redis from 'ioredis'
 import ms, { StringValue } from 'ms'
 import { User } from 'prisma-generated/client'
-import { Login, SendTempPass, SignUp } from 'schemas'
+import { Login, SendTempPass, SignUp, VerifyEmail } from 'schemas'
 import { Config, JwtConfig } from 'src/config'
 import { UserService } from 'src/user'
 import { UserPayload } from './types'
@@ -22,22 +22,27 @@ export class AuthService {
     private readonly config: ConfigService<Config, true>,
   ) {}
 
-  async sendTempPass(sendTempPass: SendTempPass) {
-    const { input } = sendTempPass
-
-    if (input == null) {
-      throw new BadRequestException('Phone or email is required')
-    }
-
+  async sendTempPass(sendTempPass: SendTempPass | VerifyEmail, user?: User | UserPayload) {
     const tempPass = generateToken()
     const hashedPass = await bcrypt.hash(tempPass, 10)
 
+    let input = ''
+
+    if ('email' in sendTempPass) {
+      input = sendTempPass.email
+      await this.redis.set(`user:${user!.phone}`, sendTempPass.email, 'EX', ms('2m'))
+    }
+    if ('phone' in sendTempPass) {
+      input = sendTempPass.phone
+    }
+
     await this.redis.set(`pass:${input}`, hashedPass, 'EX', ms('2m'))
+
     return tempPass
   }
 
   async signUp(signUp: SignUp, res: Response) {
-    const user = await this.userService.findOne(signUp.input)
+    const user = await this.userService.findOne(signUp.phone)
 
     if (user) {
       throw new BadRequestException('User already exists')
@@ -75,7 +80,7 @@ export class AuthService {
   }
 
   async createCookies(user: User | UserPayload, res: Response, setRefresh = false) {
-    const payload = { email: user.email, sub: (user as UserPayload).sub ?? (user as User).uuid }
+    const payload = { phone: user.phone, sub: (user as UserPayload).sub ?? (user as User).uuid }
 
     const accessToken = await this.jwt.signAsync(payload)
 

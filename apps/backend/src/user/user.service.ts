@@ -1,10 +1,19 @@
-import { Injectable } from '@nestjs/common'
-import { SignUp } from 'schemas'
+import { AuthService, UserPayload } from '@app/auth'
+import { InjectRedis } from '@nestjs-modules/ioredis'
+import { forwardRef, Inject, Injectable } from '@nestjs/common'
+import Redis from 'ioredis'
+import { User } from 'prisma-generated/client'
+import { ConfirmEmail, SignUp, UpdateUser } from 'schemas'
 import { PrismaService } from 'src/database'
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    @InjectRedis() private readonly redis: Redis,
+    private readonly prismaService: PrismaService,
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
+  ) {}
 
   async findOne(input: string) {
     if (input == null) {
@@ -22,12 +31,36 @@ export class UserService {
   }
 
   async create(signUp: SignUp) {
-    const { input, name } = signUp
+    const { email, name, phone } = signUp
 
-    const data = input.includes('@')
-      ? { email: input, name }
-      : { phone: input, name }
+    return this.prismaService.user.create({
+      data: {
+        email,
+        name,
+        phone,
+      },
+    })
+  }
 
-    return this.prismaService.user.create({ data })
+  async update(user: User | UserPayload, updateUser: UpdateUser) {
+    return this.prismaService.user.update({
+      where: { phone: user.phone },
+      data: { name: updateUser.name },
+    })
+  }
+
+  async confirmEmail(user: User | UserPayload, confirmEmail: ConfirmEmail) {
+    const email = await this.redis.get(`user:${user.phone}`)
+
+    if (email == null) {
+      throw new Error('Email not found')
+    }
+
+    await this.authService.validateTempPass(email, confirmEmail.password)
+
+    return this.prismaService.user.update({
+      where: { phone: user.phone },
+      data: { email },
+    })
   }
 }
