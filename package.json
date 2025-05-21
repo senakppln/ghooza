@@ -16,8 +16,8 @@
     "typecheck": "pnpm -r typecheck"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "4.13.0",
-    "eslint": "9.26.0",
+    "@antfu/eslint-config": "4.13.2",
+    "eslint": "9.27.0",
     "installed-check": "9.3.0",
     "lint-staged": "15.5.2",
     "sherif": "1.5.0",
