@@ -1,10 +1,10 @@
 {
   "name": "@ghooza/frontend",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --host 192.168.1.108",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -13,15 +13,21 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
+    "@nuxt/ui": "^3.1.2",
+    "@types/country-telephone-data": "^0.6.3",
     "@unhead/vue": "^2.0.9",
-    "zod": "^3.25.17",
+    "country-telephone-data": "^0.6.3",
+    "node-fetch": "2",
     "nuxt": "^3.17.4",
+    "schemas": "workspace:*",
+    "tailwindcss": "^4.1.7",
     "vue": "^3.5.14",
-    "schemas": "workspace:*"
+    "zod": "^3.25.17"
   },
   "devDependencies": {
     "@antfu/eslint-config": "4.13.2",
     "@nuxt/eslint": "1.4.1",
+    "@types/node-fetch": "^2.6.12",
     "eslint": "9.27.0",
     "typescript": "5.8.3",
     "vue-tsc": "2.2.10"

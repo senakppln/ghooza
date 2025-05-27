@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+input[placeholder="Phone number"]::placeholder {
+  color: #9baabf;
+  opacity: 1;
+}
