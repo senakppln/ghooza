@@ -1,76 +1,73 @@
 <script setup lang="ts">
 const router = useRouter()
-interface Country {
+
+const { data: countries, status, execute } = await useLazyFetch<{
   name: string
   code: string
   emoji: string
   dial_code: string
-}
-const { data: countries, status, execute } = await useFetch<Country[]>(
-  '/api/countries.json',
-  { immediate: false },
-)
-
-const selected = ref<Country | undefined>(undefined)
+}[]>('/api/countries.json', {
+  immediate: false,
+})
 
 function onOpen() {
   if (!countries.value?.length) {
     execute()
   }
 }
+
 function onSubmit() {
-  const form = document.querySelector('form')
-  if (form) {
-    const formData = new FormData(form)
-    const phone = formData.get('phone')
-    if (phone) {
-      router.push(`/sign-up`)
-    }
-  }
+  router.push('./sign-up')
 }
 </script>
 
 <template>
   <div class="flex h-screen w-screen items-center justify-center">
-    <div class="flex flex-col items-center justify-center gap-4 bg-pink-50 p-10 pt-25 pb-25 shadow-md rounded-3xl">
-      <h1 class="text-3xl font-bold text-center text-neutral-900">
+    <div class="flex flex-col items-center justify-center gap-4 bg-pink-50 p-10 pt-20 pb-20 shadow-md rounded-3xl w-2/3 lg:w-1/4">
+      <h1 class="text-3xl font-bold text-center text-neutral-900 ">
         Sign In
       </h1>
       <p class="text-center text-neutral-900">
         Sign in to your account
       </p>
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 sm:w-3/4 lg:w-full">
         <UContainer>
           <UForm action="/api/auth/sign-in" method="post">
             <div class="flex flex-col gap-4">
               <div class="flex flex-row gap-2">
                 <div class="flex flex-row items-end">
-                  <UInputMenu
-                    v-model="selected"
+                  <USelectMenu
                     :items="countries"
                     :loading="status === 'pending'"
-                    label-key="name"
-                    placeholder="Code"
-                    class="w-24"
+                    :search-input="{ icon: 'i-lucide-search', size: 'xs' }"
+                    label-key="dial_code"
+                    class="max-w-4"
                     @update:open="onOpen"
                   >
                     <template #leading="{ modelValue, ui }">
                       <span v-if="modelValue" class="size-5 text-center">
-                        {{ modelValue.emoji }}
+                        {{ modelValue?.emoji }}
                       </span>
-                      <UIcon v-else name="i-lucide-earth" :class="ui.leadingIcon()" />
+                      <UIcon
+                        v-else
+                        name="i-lucide-earth"
+                        :class="ui.leadingIcon()"
+                      />
                     </template>
                     <template #item-leading="{ item }">
-                      <span class="size-5">
+                      <span>
                         {{ item.emoji }}
                       </span>
-                      <span class="ml-1">+{{ item.dial_code }}</span>
+                      <span>+{{ item.dial_code }}</span>
                     </template>
-                  </UInputMenu>
+                  </USelectMenu>
                 </div>
                 <div>
                   <UInput
                     placeholder="Phone number"
+                    :ui="{
+                      base: 'focus:border-red-500 focus:ring-red-500',
+                    }"
                   />
                 </div>
               </div>
