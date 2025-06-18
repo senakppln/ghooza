@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const router = useRouter()
-router.push('/sign-in')
+router.push('auth/sign-in')
 </script>
 
 <template>
-  <h1>index</h1>
+  <br>
 </template>
