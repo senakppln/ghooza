@@ -13,23 +13,23 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@nuxt/ui": "^3.3.0",
+    "@nuxt/ui": "^3.3.7",
     "@types/country-telephone-data": "^0.6.3",
-    "@unhead/vue": "^2.0.14",
+    "@unhead/vue": "^2.1.17",
     "country-telephone-data": "^0.6.3",
     "node-fetch": "2.7.0",
-    "nuxt": "^3.18.1",
+    "nuxt": "^3.21.11",
     "schemas": "workspace:*",
-    "tailwindcss": "^4.1.11",
-    "vue": "^3.5.18",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.42",
     "zod": "^3.25.76"
   },
   "devDependencies": {
     "@antfu/eslint-config": "4.19.0",
-    "@nuxt/eslint": "1.8.0",
+    "@nuxt/eslint": "1.17.0",
     "@types/node-fetch": "2.6.12",
-    "eslint": "9.33.0",
-    "typescript": "5.9.2",
+    "eslint": "9.39.5",
+    "typescript": "5.9.3",
     "vue-tsc": "2.2.12"
   }
 }
